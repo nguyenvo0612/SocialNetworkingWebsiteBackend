@@ -1,0 +1,70 @@
+package com.oauth.oauthbackend.service;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+public class JWTService {
+    private static final String SECRET_KEY = "your_secret_key";
+    private static final long EXPIRATION_TIME = 3600000; //1hour
+    public static String  generateAccessToken(String email, String firstName, String lastName, String picture) {
+        return Jwts.builder()
+                .setSubject(email) // Hoặc có thể sử dụng id nếu cần
+                .claim("firstName", firstName)
+                .claim("lastName", lastName)
+                .claim("picture", picture)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+    public static String generateRefreshToken(String email, String firstName, String lastName, String picture) {
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("firstName", firstName)
+                .claim("lastName", lastName)
+                .claim("picture", picture)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 24*EXPIRATION_TIME)) // 30 days expiration time
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    // Extract Claims from Access Token or Refresh Token
+    public static Claims extractClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    // Get Username from Access Token or Refresh Token
+    public static String extractUsername(String token) {
+        return extractClaims(token)
+                .getSubject();
+    }
+
+    public String getEmailFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY.getBytes())
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+}
