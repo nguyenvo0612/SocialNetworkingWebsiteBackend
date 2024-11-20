@@ -6,7 +6,7 @@ spring.security.oauth2.client.registration.google.redirect-uri=http://localhost:
 spring.security.oauth2.client.provider.google.authorization-uri=https://accounts.google.com/o/oauth2/auth
 spring.security.oauth2.client.provider.google.token-uri=https://oauth2.googleapis.com/token
 spring.security.oauth2.client.provider.google.user-info-uri=https://www.googleapis.com/oauth2/v3/userinfo
-# Cấu hình MySQL
+# Cáº¥u hÃ¬nh MySQL
 spring.datasource.url=jdbc:mysql://localhost:3306/socialnetwork
 spring.datasource.username=sa
 spring.datasource.password=123456

@@ -18,20 +18,21 @@ public class Profile {
     @Column(name = "profile_id")
     private Long profileId;
 
+    @Column(name = "nickname")
+    private String nickname;
+
+    @Column(name = "real_name")
+    private String realName;
+
     @Column(name = "bio")
     private String bio;
 
     @Column(name = "location")
     private String location;
 
-    @Column(name = "website")
-    private String website;
+    @Column(name = "avatar")
+    private String avatar;
 
-    @Column(name = "picture")
-    private String picture;
-
-    @Column(name = "cover_photo")
-    private String coverPhoto;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)

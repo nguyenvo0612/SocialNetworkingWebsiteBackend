@@ -14,13 +14,11 @@ import lombok.Setter;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "role_id")
+    private Long roleId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "name_role")
+    private String nameRole;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+
 }
