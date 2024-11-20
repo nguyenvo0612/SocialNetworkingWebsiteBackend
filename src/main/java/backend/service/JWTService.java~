@@ -1,16 +1,11 @@
-package com.oauth.oauthbackend.service;
+package backend.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class JWTService {
@@ -27,12 +22,9 @@ public class JWTService {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
-    public static String generateRefreshToken(String email, String firstName, String lastName, String picture) {
+    public static String generateRefreshToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("firstName", firstName)
-                .claim("lastName", lastName)
-                .claim("picture", picture)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 24*EXPIRATION_TIME)) // 30 days expiration time
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)

@@ -3,14 +3,13 @@ package backend.controller;
 import backend.entity.User;
 import backend.service.JWTService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class HomeController {
             user.setPicture(authentication.getAttribute("picture"));
 
             String accessToken = JWTService.generateAccessToken(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPicture());
-            String refreshToken = JWTService.generateRefreshToken(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPicture());
+            String refreshToken = JWTService.generateRefreshToken(user.getEmail());
 
             Map<String, String> response = new HashMap<>();
             response.put("accessToken", accessToken);
@@ -85,11 +84,21 @@ public class HomeController {
             }
             Map<String, String> response = new HashMap<>();
             String token = JWTService.generateAccessToken(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPicture());
-            String refreshToken = JWTService.generateRefreshToken(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPicture());
+            String refreshToken = JWTService.generateRefreshToken(user.getEmail());
             return ResponseEntity.ok(Map.of("accessToken", token, "refreshToken", refreshToken));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User is not authenticated"));
         }
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        // Xóa phiên làm việc
+        request.getSession().invalidate();
+
+        // Nếu sử dụng JWT, có thể thêm logic để làm cho token không còn hiệu lực
+        // Ví dụ: thêm token vào danh sách đen (blacklist)
+
+        return ResponseEntity.ok().build();
     }
 }
 

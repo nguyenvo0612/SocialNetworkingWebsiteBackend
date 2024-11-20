@@ -10,7 +10,7 @@ import java.util.Date;
 @Service
 public class JWTService {
     private static final String SECRET_KEY = "your_secret_key";
-    private static final long EXPIRATION_TIME = 3600000; //1hour
+    private static final long EXPIRATION_TIME = 60; //1hour
     public static String  generateAccessToken(String email, String firstName, String lastName, String picture) {
         return Jwts.builder()
                 .setSubject(email) // Hoặc có thể sử dụng id nếu cần
@@ -22,12 +22,9 @@ public class JWTService {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
-    public static String generateRefreshToken(String email, String firstName, String lastName, String picture) {
+    public static String generateRefreshToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("firstName", firstName)
-                .claim("lastName", lastName)
-                .claim("picture", picture)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 24*EXPIRATION_TIME)) // 30 days expiration time
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
