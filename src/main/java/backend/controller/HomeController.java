@@ -43,7 +43,6 @@ public class HomeController {
     public ResponseEntity<Map<String, String>> getToken(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal authentication) {
         if (authentication != null) {
             // Log thông tin từ AuthenticationPrincipal
-            System.out.println("Authenticated Principal: " + authentication.getAttributes());
             User user = new User();
             user.setEmail(authentication.getAttribute("email"));
             user.setFirstName(authentication.getAttribute("family_name"));
@@ -52,10 +51,10 @@ public class HomeController {
             String email = authentication.getAttribute("email");
             if (email == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Email is missing"));
+            } else if (userService.findUserByEmail(user.getEmail()) == null) {
+                userService.createUser(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPicture());
+                System.out.println("create user success");
             }
-//            else if (userService.findUserByEmail(user.getEmail())==null){
-//                userService.createUser(user.getFirstName(),user.getLastName(),user.getEmail(),user.getPicture());
-//            }
             Map<String, String> response = new HashMap<>();
             String token = JWTService.generateAccessToken(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPicture());
             String refreshToken = JWTService.generateRefreshToken(user.getEmail());

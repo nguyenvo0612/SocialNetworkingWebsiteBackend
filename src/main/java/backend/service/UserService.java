@@ -27,10 +27,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Boolean findUserByEmail(String email) {
+    public User  findUserByEmail(String email) {
         if (userRepository.findByEmail(email) == null) {
-            return false;
+            return null;
         }
-        return true;
+        return userRepository.findByEmail(email);
     }
 }
