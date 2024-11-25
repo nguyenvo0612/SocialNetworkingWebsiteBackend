@@ -24,22 +24,21 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults()) // Kích hoạt CORS
                 .authorizeHttpRequests(author -> author
-                        .requestMatchers("/", "/login", "/error", "/login/oauth2/code/google","/logout").permitAll() // Cho phép các endpoint công khai
+                        .requestMatchers("/", "/login", "/error", "/login/oauth2/code/google", "/logout").permitAll() // Cho phép các endpoint công khai
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated() // Yêu cầu xác thực cho các endpoint còn lại
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("http://localhost:4200/user", true) // Chuyển hướng sau khi login thành công
+                                .defaultSuccessUrl("http://localhost:4200/user", true) // Chuyển hướng sau khi login thành công
 //                        .failureUrl("http://localhost:4200/login") // Chuyển hướng khi login thất bại,
 
                 ).logout(logout -> logout
-                        .logoutUrl("http://localhost:4200/logout")
-                       .logoutSuccessUrl("http://localhost:4200/login"))
-                       .logout(logout -> logout
-                       .invalidateHttpSession(true) // Xóa phiên
-                       .clearAuthentication(true)
-                       .deleteCookies("JSESSIONID")); // Xóa cookie.
-                       
+                        .logoutUrl("http://localhost:4200/logout"))
+                .logout(logout -> logout
+                        .invalidateHttpSession(true) // Xóa phiên
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")); // Xóa cookie.
+
         return http.build();
     }
 
@@ -57,7 +56,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration); // Áp dụng CORS cho tất cả các endpoint
         return source;
     }
-
 
 
 }

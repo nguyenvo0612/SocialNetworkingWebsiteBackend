@@ -25,7 +25,7 @@ public class User {
     @Column(name = "picture")
     private String picture;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Role roleId;
 

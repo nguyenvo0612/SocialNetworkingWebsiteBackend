@@ -10,7 +10,7 @@ import java.util.Date;
 @Service
 public class JWTService {
     private static final String SECRET_KEY = "your_secret_key";
-    private static final long EXPIRATION_TIME = 60; //1hour
+    private static final long EXPIRATION_TIME = 10; //1hour
     public static String  generateAccessToken(String email, String firstName, String lastName, String picture) {
         return Jwts.builder()
                 .setSubject(email) // Hoặc có thể sử dụng id nếu cần

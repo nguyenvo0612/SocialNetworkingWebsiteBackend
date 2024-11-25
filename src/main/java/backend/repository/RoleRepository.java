@@ -1,11 +1,9 @@
 package backend.repository;
 
-import backend.entity.Profile;
+import backend.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProfileRepository extends JpaRepository<Profile, Long> {
-    Profile findByUserId(Long userId);
-
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 }
