@@ -4,10 +4,7 @@ import backend.dto.ProfileDTO;
 import backend.entity.Profile;
 import backend.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.cloudinary.*;
 import com.cloudinary.utils.ObjectUtils;
 
@@ -17,10 +14,16 @@ public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
+    @GetMapping("/find/{userId}")
+    public Profile findProfileByUserId(@PathVariable Long userId ) {
+        return profileService.findProfileByUserId(userId);
+    }
+
+
     @PostMapping("/create")
     public Profile createProfile(@RequestParam ProfileDTO profileDTO) {
         profile.setUserId(profileDTO.getUserId());
-        profile.setNickname(profileDTO.getNickname());
+        profile.setNickName(profileDTO.getNickname());
         profile.setRealName(profileDTO.getRealName());
         profile.setBio(profileDTO.getBio());
         profile.setLocation(profileDTO.getLocation());
@@ -33,4 +36,6 @@ public class ProfileController {
         profile.setAvatar(profileDTO.getAvatar());
         return profileService.updateAvatar(profileDTO, profileId);
     }
+
+
 }

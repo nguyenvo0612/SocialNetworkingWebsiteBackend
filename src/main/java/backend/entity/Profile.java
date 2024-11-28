@@ -18,8 +18,8 @@ public class Profile {
     @Column(name = "profile_id")
     private Long profileId;
 
-    @Column(name = "nickname")
-    private String nickname;
+    @Column(name = "nick_name")
+    private String nickName;
 
     @Column(name = "real_name")
     private String realName;

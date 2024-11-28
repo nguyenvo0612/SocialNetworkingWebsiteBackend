@@ -13,11 +13,8 @@ public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
 
-    public boolean findProfileByUserId(Long userId) {
-
-        if (profileRepository.findByUserId(userId) == null) {
-            return false;
-        }return true;
+    public Profile findProfileByUserId(Long userId) {
+        return profileRepository.findProfileByUserId(userId);
     }
 
 
@@ -26,7 +23,7 @@ public class ProfileService {
         Profile profile = new Profile();
         profile.setUserId(profileDTO.getUserId());
         profile.setRealName(profileDTO.getRealName());
-        profile.setNickname(profileDTO.getNickname());
+        profile.setNickName(profileDTO.getNickname());
         profile.setBio(profileDTO.getBio());
         profile.setAvatar(profileDTO.getAvatar());
         return profileRepository.save(profile);
