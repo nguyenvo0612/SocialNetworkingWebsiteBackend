@@ -4,38 +4,40 @@ import backend.dto.ProfileDTO;
 import backend.entity.Profile;
 import backend.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.cloudinary.*;
-import com.cloudinary.utils.ObjectUtils;
 
-@RestController("/profile")
+
+@RestController
+@RequestMapping("api/profile")
 public class ProfileController {
-    private Profile profile;
     @Autowired
     private ProfileService profileService;
 
-    @GetMapping("/find/{userId}")
-    public Profile findProfileByUserId(@PathVariable Long userId ) {
-        return profileService.findProfileByUserId(userId);
+    @GetMapping("/find/{id}")
+    public Profile findProfileById(@PathVariable Long id) {
+        return  profileService.findProfileByUserId(id);
     }
 
 
     @PostMapping("/create")
-    public Profile createProfile(@RequestParam ProfileDTO profileDTO) {
-        profile.setUserId(profileDTO.getUserId());
-        profile.setNickName(profileDTO.getNickname());
-        profile.setRealName(profileDTO.getRealName());
-        profile.setBio(profileDTO.getBio());
-        profile.setLocation(profileDTO.getLocation());
-        profile.setAvatar(profileDTO.getAvatar());
+    public Profile createProfile(@RequestBody ProfileDTO profileDTO) {
         return profileService.createProfile(profileDTO);
     }
 
     @PostMapping("/update_avatar")
-    public Profile updateAvatar(@RequestParam ProfileDTO profileDTO, @RequestParam Long profileId) {
-        profile.setAvatar(profileDTO.getAvatar());
+    public Profile updateAvatar(@RequestBody ProfileDTO profileDTO, @PathVariable Long profileId) {
         return profileService.updateAvatar(profileDTO, profileId);
     }
 
+    @PutMapping("/update/{profileId}")
+    public Profile updateProfile(@PathVariable Long profileId, @RequestBody ProfileDTO profileDTO) {
+        return profileService.updateProfile(profileId, profileDTO);
+    }
+
+    @DeleteMapping("/delete/{profileId}")
+    public void deleteProfile(@PathVariable Long profileId) {
+        profileService.deleteProfile(profileId);
+    }
 
 }

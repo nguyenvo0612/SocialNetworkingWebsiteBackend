@@ -6,7 +6,6 @@ import backend.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class ProfileService {
@@ -16,8 +15,6 @@ public class ProfileService {
     public Profile findProfileByUserId(Long userId) {
         return profileRepository.findProfileByUserId(userId);
     }
-
-
 
     public Profile createProfile(ProfileDTO profileDTO) {
         Profile profile = new Profile();
@@ -29,15 +26,24 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
+    public Profile updateProfile(Long profileId, ProfileDTO profileDTO) {
+        Profile profile = profileRepository.findById(profileId).orElseThrow(() -> new RuntimeException("Profile not found"));
+        profile.setNickName(profileDTO.getNickname());
+        profile.setRealName(profileDTO.getRealName());
+        profile.setBio(profileDTO.getBio());
+        profile.setLocation(profileDTO.getLocation());
+        profile.setAvatar(profileDTO.getAvatar());
+        return profileRepository.save(profile);
+    }
 
-    public Profile updateAvatar(ProfileDTO profileDTO,Long profileId) {
-        Profile profile = profileRepository.getById(profileId);
+    public void deleteProfile(Long profileId) {
+        profileRepository.deleteById(profileId);
+    }
+
+    public Profile updateAvatar(ProfileDTO profileDTO, Long profileId) {
+        Profile profile = profileRepository.findById(profileId)
+            .orElseThrow(() -> new RuntimeException("Profile not found"));
         profile.setAvatar(profileDTO.getAvatar());
         return profileRepository.save(profile);
     }
 }
-//        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-//                "cloud_name", "dzq2dpudl",
-//                "api_key", "346147426461483",
-//                "api_secret", "ZTnk5B3o4Jy4fAqZxum3ap2i62c",
-//                "secure", true));

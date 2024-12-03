@@ -1,12 +1,13 @@
 package backend.service;
 
-import backend.dto.UserDTO;
 import backend.entity.Role;
 import backend.entity.User;
 import backend.repository.RoleRepository;
 import backend.repository.UserRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,9 +29,10 @@ public class UserService {
     }
 
     public User  findUserByEmail(String email) {
-        if (userRepository.findByEmail(email) == null) {
-            return null;
-        }
-        return userRepository.findByEmail(email);
+        return userRepository.findUserByEmail(email);
+    }
+
+    public List<User> getAll(){
+        return userRepository.findAll();
     }
 }

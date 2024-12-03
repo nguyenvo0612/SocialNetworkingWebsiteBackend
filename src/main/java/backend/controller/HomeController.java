@@ -23,26 +23,25 @@ public class HomeController {
     private UserService userService;
     private User user = new User();
 
+//
+//    @GetMapping("/refresh")
+//    public ResponseEntity<Map<String, String>> refreshAccessToken(@RequestBody Map<String, String> request) {
+//        String refreshToken = request.get("refreshToken");
+//
+//        // Validate refreshToken
+//        if (jwtService.validateToken(refreshToken)) {
+//            String email = JWTService.extractUsername(refreshToken);
+//            String newAccessToken = JWTService.generateAccessToken( "userId",email, "firstName", "lastName", "picture");
+//            return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid refresh token"));
+//        }
+//    }
 
-    @GetMapping("/refresh")
-    public ResponseEntity<Map<String, String>> refreshAccessToken(@RequestBody Map<String, String> request) {
-        String refreshToken = request.get("refreshToken");
 
-        // Validate refreshToken
-        if (jwtService.validateToken(refreshToken)) {
-            String email = JWTService.extractUsername(refreshToken);
-            String newAccessToken = JWTService.generateAccessToken(email, "firstName", "lastName", "picture");
-            return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid refresh token"));
-        }
-    }
-
-
-    @GetMapping("/api/user")
+    @GetMapping("/auth/callback")
     public ResponseEntity<Map<String, String>> getToken(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal authentication) {
         if (authentication != null) {
-            // Log thông tin từ AuthenticationPrincipal
             User user = new User();
             user.setEmail(authentication.getAttribute("email"));
             user.setFirstName(authentication.getAttribute("family_name"));

@@ -13,7 +13,7 @@ public class JWTService {
     private static final long EXPIRATION_TIME = 10; //1hour
     public static String  generateAccessToken(String email, String firstName, String lastName, String picture) {
         return Jwts.builder()
-                .setSubject(email) // Hoặc có thể sử dụng id nếu cần
+                .setSubject(email)
                 .claim("firstName", firstName)
                 .claim("lastName", lastName)
                 .claim("picture", picture)

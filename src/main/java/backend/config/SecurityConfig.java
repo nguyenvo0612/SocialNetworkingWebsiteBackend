@@ -1,5 +1,6 @@
 package backend.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,45 +19,43 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${FRONTEND_URL}")
+    private String frontendUrl;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults()) // Kích hoạt CORS
                 .authorizeHttpRequests(author -> author
-                        .requestMatchers("/", "/login", "/error", "/login/oauth2/code/google", "/logout").permitAll() // Cho phép các endpoint công khai
+                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/", "/login", "/error", "/login/oauth2/code/google", "/logout").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .anyRequest().authenticated() // Yêu cầu xác thực cho các endpoint còn lại
+                        .requestMatchers("/find/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                                .defaultSuccessUrl("http://localhost:4200/user", true) // Chuyển hướng sau khi login thành công
-//                        .failureUrl("http://localhost:4200/login") // Chuyển hướng khi login thất bại,
-
+                                .defaultSuccessUrl(frontendUrl + "/home", true)
                 ).logout(logout -> logout
-                        .logoutUrl("http://localhost:4200/logout"))
-                .logout(logout -> logout
-                        .invalidateHttpSession(true) // Xóa phiên
+                        .logoutUrl(frontendUrl + "/logout")
+                        .invalidateHttpSession(true)
                         .clearAuthentication(true)
-                        .deleteCookies("JSESSIONID")); // Xóa cookie.
+                        .deleteCookies("JSESSIONID"));
 
         return http.build();
     }
 
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Cho phép yêu cầu từ frontend
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Các phương thức HTTP được phép
-        configuration.setAllowedHeaders(List.of("*")); // Cho phép tất cả các header
-        configuration.setAllowCredentials(true); // Cho phép gửi thông tin xác thực (cookies, headers xác thực)
+        configuration.setAllowedOrigins(List.of(frontendUrl));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
 
-        // Đảm bảo rằng CORS được áp dụng cho tất cả các endpoint
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Áp dụng CORS cho tất cả các endpoint
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-
 }
 
