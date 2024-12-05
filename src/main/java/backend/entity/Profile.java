@@ -30,6 +30,9 @@ public class Profile {
     @Column(name = "location")
     private String location;
 
+    @Column(name = "link_website")
+    private String linkWebsite;
+
     @Column(name = "avatar")
     private String avatar;
 

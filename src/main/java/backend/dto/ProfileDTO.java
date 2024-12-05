@@ -17,5 +17,7 @@ public class ProfileDTO {
 
     private String avatar;
 
+    private String linkWebsite;
+
     private Long userId;
 }
