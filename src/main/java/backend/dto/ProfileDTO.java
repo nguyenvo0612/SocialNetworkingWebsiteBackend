@@ -1,6 +1,5 @@
 package backend.dto;
 
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 

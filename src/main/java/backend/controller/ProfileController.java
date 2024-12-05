@@ -3,9 +3,14 @@ package backend.controller;
 import backend.dto.ProfileDTO;
 import backend.entity.Profile;
 import backend.service.ProfileService;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 @RestController
@@ -22,11 +27,12 @@ public class ProfileController {
 
     @PostMapping("/create")
     public Profile createProfile(@RequestBody ProfileDTO profileDTO) {
-        return profileService.createProfile(profileDTO);
+        return profileService.createProfileWithAvatar(profileDTO);
     }
 
     @PostMapping("/update_avatar")
     public Profile updateAvatar(@RequestBody ProfileDTO profileDTO, @PathVariable Long profileId) {
+
         return profileService.updateAvatar(profileDTO, profileId);
     }
 
