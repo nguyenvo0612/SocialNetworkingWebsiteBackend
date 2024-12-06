@@ -1,9 +1,9 @@
 package backend.controller;
 
-import backend.entity.User;
+import backend.entity.Account;
 import backend.service.JWTService;
 
-import backend.service.UserService;
+import backend.service.AccountService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class HomeController {
+public class AuthController {
     @Autowired
     private JWTService jwtService;
     @Autowired
-    private UserService userService;
-    private User user = new User();
+    private AccountService userService;
+    private Account account = new Account();
 
 //
 //    @GetMapping("/refresh")
@@ -42,21 +42,20 @@ public class HomeController {
     @GetMapping("/auth/callback")
     public ResponseEntity<Map<String, String>> getToken(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal authentication) {
         if (authentication != null) {
-            User user = new User();
-            user.setEmail(authentication.getAttribute("email"));
-            user.setFirstName(authentication.getAttribute("family_name"));
-            user.setLastName(authentication.getAttribute("given_name"));
-            user.setPicture(authentication.getAttribute("picture"));
+            Account account = new Account();
+            account.setEmail(authentication.getAttribute("email"));
+            account.setFirstName(authentication.getAttribute("family_name"));
+            account.setLastName(authentication.getAttribute("given_name"));
             String email = authentication.getAttribute("email");
             if (email == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Email is missing"));
-            } else if (userService.findUserByEmail(user.getEmail()) == null) {
-                userService.createUser(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPicture());
-                System.out.println("create user success");
+            } else if (userService.findAccountByEmail(account.getEmail()) == null) {
+                userService.createAccount(account.getFirstName(), account.getLastName(), account.getEmail());
+                System.out.println("create account success");
             }
             Map<String, String> response = new HashMap<>();
-            String token = JWTService.generateAccessToken(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPicture());
-            String refreshToken = JWTService.generateRefreshToken(user.getEmail());
+            String token = JWTService.generateAccessToken(account.getEmail(), account.getFirstName(), account.getLastName());
+            String refreshToken = JWTService.generateRefreshToken(account.getEmail());
             return ResponseEntity.ok(Map.of("accessToken", token, "refreshToken", refreshToken));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User is not authenticated"));

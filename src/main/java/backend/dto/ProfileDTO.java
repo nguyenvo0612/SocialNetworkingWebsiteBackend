@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ProfileDTO {
 
-    private String nickname;
+    private String nickName;
 
     private String realName;
 
@@ -19,5 +19,5 @@ public class ProfileDTO {
 
     private String linkWebsite;
 
-    private Long userId;
+    private Long accountId;
 }

@@ -1,8 +1,7 @@
 package backend.controller;
 
-import backend.entity.User;
-import backend.service.UserService;
-import lombok.Getter;
+import backend.entity.Account;
+import backend.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,20 +10,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserController {
+public class AccountController {
     @Autowired
-    private UserService userService;
+    private AccountService userService;
 
 
     @GetMapping("/getall")
-    public ResponseEntity<List<User>> getAll() {
-        List<User> userList= userService.getAll();
-        return ResponseEntity.ok(userList);
+    public ResponseEntity<List<Account>> getAll() {
+        List<Account> accountList = userService.getAll();
+        return ResponseEntity.ok(accountList);
     }
 
     @GetMapping("/find-userid/{email}")
     public Long findUserByEmail(@PathVariable String email) {
-        User user = userService.findUserByEmail(email);
-        return user.getUserId();
+        Account account = userService.findAccountByEmail(email);
+        return account.getAccountId();
     }
 }

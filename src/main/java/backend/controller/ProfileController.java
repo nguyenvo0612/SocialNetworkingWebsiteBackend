@@ -3,14 +3,9 @@ package backend.controller;
 import backend.dto.ProfileDTO;
 import backend.entity.Profile;
 import backend.service.ProfileService;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 
 @RestController
@@ -21,7 +16,7 @@ public class ProfileController {
 
     @GetMapping("/find/{id}")
     public Profile findProfileById(@PathVariable Long id) {
-        return  profileService.findProfileByUserId(id);
+        return  profileService.findProfileByAccountId(id);
     }
 
 

@@ -38,9 +38,9 @@ public class Profile {
 
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
-    private User user;
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id", insertable = false, updatable = false)
+    private Account account;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private Long userId;
+    @Column(name = "account_id", insertable = false, updatable = false)
+    private Long accountId;
 }

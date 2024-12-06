@@ -11,12 +11,11 @@ import java.util.Date;
 public class JWTService {
     private static final String SECRET_KEY = "your_secret_key";
     private static final long EXPIRATION_TIME = 10; //1hour
-    public static String  generateAccessToken(String email, String firstName, String lastName, String picture) {
+    public static String  generateAccessToken(String email, String firstName, String lastName) {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("firstName", firstName)
                 .claim("lastName", lastName)
-                .claim("picture", picture)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)

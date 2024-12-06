@@ -5,6 +5,7 @@ import backend.entity.Profile;
 import backend.repository.ProfileRepository;
 import io.github.cdimascio.dotenv.Dotenv;
 
+import java.security.SecureRandom;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import com.cloudinary.utils.ObjectUtils;
 
 @Service
 public class ProfileService {
-    private final String cloudinaryUrl; // Khai báo biến cho URL Cloudinary
+    private final String cloudinaryUrl; 
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final int CODE_LENGTH = 12;
     @Autowired
     private ProfileRepository profileRepository;
 
@@ -24,8 +27,8 @@ public class ProfileService {
         this.cloudinaryUrl = dotenv.get("CLOUDINARY_URL"); // Lấy giá trị từ .env
     }
 
-    public Profile findProfileByUserId(Long userId) {
-        return profileRepository.findProfileByUserId(userId);
+    public Profile findProfileByAccountId(Long accountId) {
+        return profileRepository.findProfileByAccountId(accountId);
     }
 
     public Profile createProfileWithAvatar(ProfileDTO profileDTO) {
@@ -48,9 +51,9 @@ public class ProfileService {
 
             // Tạo profile mới
             Profile profile = new Profile();
-            profile.setUserId(profileDTO.getUserId());
+            profile.setProfileId(profileDTO.getAccountId());
             profile.setRealName(profileDTO.getRealName());
-            profile.setNickName(profileDTO.getNickname());
+            profile.setNickName(profileDTO.getNickName());
             profile.setBio(profileDTO.getBio());
             profile.setAvatar(avatarUrl); // Sử dụng URL từ Cloudinary
             return profileRepository.save(profile);
@@ -61,7 +64,7 @@ public class ProfileService {
 
     public Profile updateProfile(Long profileId, ProfileDTO profileDTO) {
         Profile profile = profileRepository.findById(profileId).orElseThrow(() -> new RuntimeException("Profile not found"));
-        profile.setNickName(profileDTO.getNickname());
+        profile.setNickName(profileDTO.getNickName());
         profile.setRealName(profileDTO.getRealName());
         profile.setBio(profileDTO.getBio());
         profile.setLocation(profileDTO.getLocation());
@@ -78,5 +81,15 @@ public class ProfileService {
                 .orElseThrow(() -> new RuntimeException("Profile not found"));
         profile.setAvatar(profileDTO.getAvatar());
         return profileRepository.save(profile);
+    }
+
+    public static String generateVerifyCode() {
+        SecureRandom random = new SecureRandom();
+        StringBuilder verifyCode = new StringBuilder(CODE_LENGTH);
+        for (int i = 0; i < CODE_LENGTH; i++) {
+            int index = random.nextInt(CHARACTERS.length()); 
+            verifyCode.append(CHARACTERS.charAt(index)); 
+        }
+        return verifyCode.toString(); 
     }
 }
