@@ -23,7 +23,7 @@ public class SecurityConfig {
     private String frontendUrl;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomOAuth2SuccessHandler customOAuth2SuccessHandler) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults()) // Kích hoạt CORS
@@ -33,9 +33,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/find/**").permitAll()
                         .anyRequest().authenticated()
-                )
+                ).oauth2Login(oauth2 -> oauth2.successHandler(customOAuth2SuccessHandler))
                 .oauth2Login(oauth2 -> oauth2
                                 .defaultSuccessUrl(frontendUrl + "/home", true)
+
+
                 ).logout(logout -> logout
                         .logoutUrl(frontendUrl + "/logout")
                         .invalidateHttpSession(true)
@@ -44,6 +46,13 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    public CustomOAuth2SuccessHandler customOAuth2SuccessHandler() {
+        return new CustomOAuth2SuccessHandler();
+    }
+
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

@@ -39,7 +39,7 @@ public class AuthController {
 //    }
 
 
-    @GetMapping("/auth/callback")
+    @GetMapping("/auth/api")
     public ResponseEntity<Map<String, String>> getToken(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal authentication) {
         if (authentication != null) {
             Account account = new Account();
