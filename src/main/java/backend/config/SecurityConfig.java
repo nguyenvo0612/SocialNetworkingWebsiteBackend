@@ -19,11 +19,11 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${FRONTEND_URL}")
+    @Value("${frontend.url}")
     private String frontendUrl;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomOAuth2SuccessHandler customOAuth2SuccessHandler) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults()) // Kích hoạt CORS
@@ -33,7 +33,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/find/**").permitAll()
                         .anyRequest().authenticated()
-                ).oauth2Login(oauth2 -> oauth2.successHandler(customOAuth2SuccessHandler))
+                ).oauth2Login(oauth2 -> oauth2.defaultSuccessUrl(frontendUrl + "/home", true))
                 .oauth2Login(oauth2 -> oauth2
                                 .defaultSuccessUrl(frontendUrl + "/home", true)
 
@@ -45,11 +45,6 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID"));
 
         return http.build();
-    }
-
-    @Bean
-    public CustomOAuth2SuccessHandler customOAuth2SuccessHandler() {
-        return new CustomOAuth2SuccessHandler();
     }
 
 

@@ -29,7 +29,7 @@ public class Account {
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
 
-    @Column(name = "verify_code")
+    @Column(name = "is_email_verified")
     private Boolean isEmailVerified;
 
     @Column(name = "verification_token")

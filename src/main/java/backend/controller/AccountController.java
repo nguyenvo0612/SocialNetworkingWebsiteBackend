@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/account")
 public class AccountController {
     @Autowired
     private AccountService userService;
@@ -22,8 +22,13 @@ public class AccountController {
     }
 
     @GetMapping("/find-userid/{email}")
-    public Long findUserByEmail(@PathVariable String email) {
+    public Long findAccountByEmail(@PathVariable String email) {
         Account account = userService.findAccountByEmail(email);
         return account.getAccountId();
+    }
+
+    @PostMapping("/verify/{email}/{verificationToken}")
+    public Account verifyAccount(@PathVariable String verificationToken,@PathVariable String email) {
+        return  userService.verifyAccount(email,verificationToken);
     }
 }

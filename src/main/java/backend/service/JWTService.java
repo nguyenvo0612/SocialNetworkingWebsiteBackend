@@ -11,9 +11,10 @@ import java.util.Date;
 public class JWTService {
     private static final String SECRET_KEY = "your_secret_key";
     private static final long EXPIRATION_TIME = 10; //1hour
-    public static String  generateAccessToken(String email, String firstName, String lastName) {
+    public static String  generateAccessToken(String email, String firstName, String lastName,Long accountId) {
         return Jwts.builder()
                 .setSubject(email)
+                .claim("accountId", accountId)
                 .claim("firstName", firstName)
                 .claim("lastName", lastName)
                 .setIssuedAt(new Date())

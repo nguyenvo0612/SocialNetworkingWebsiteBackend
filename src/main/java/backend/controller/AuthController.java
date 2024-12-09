@@ -4,8 +4,10 @@ import backend.entity.Account;
 import backend.service.JWTService;
 
 import backend.service.AccountService;
+import backend.service.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,14 +16,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 public class AuthController {
     @Autowired
     private JWTService jwtService;
     @Autowired
-    private AccountService userService;
+    private AccountService accountService;
     private Account account = new Account();
+
+
+    @Autowired
+    private EmailService emailService;
 
 //
 //    @GetMapping("/refresh")
@@ -47,14 +54,23 @@ public class AuthController {
             account.setFirstName(authentication.getAttribute("family_name"));
             account.setLastName(authentication.getAttribute("given_name"));
             String email = authentication.getAttribute("email");
+
+
             if (email == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Email is missing"));
-            } else if (userService.findAccountByEmail(account.getEmail()) == null) {
-                userService.createAccount(account.getFirstName(), account.getLastName(), account.getEmail());
+            } else if (accountService.findAccountByEmail(account.getEmail()) == null) {
+                String verifyCode = accountService.generateVerifyCode();
+                accountService.createAccount(account.getFirstName(), account.getLastName(), account.getEmail(), verifyCode);
                 System.out.println("create account success");
+                emailService.sendVerificationEmail(account.getEmail(), verifyCode);
+
+                return ResponseEntity.ok(Map.of("redirectUrl", String.format("/verify/%s", email)));
+            } else if (!accountService.findAccountByEmail(account.getEmail()).getIsEmailVerified()) {
+                return ResponseEntity.ok(Map.of("redirectUrl", String.format("/verify/%s", email)));
             }
+            Account ac = accountService.findAccountByEmail(account.getEmail());
             Map<String, String> response = new HashMap<>();
-            String token = JWTService.generateAccessToken(account.getEmail(), account.getFirstName(), account.getLastName());
+            String token = JWTService.generateAccessToken(account.getEmail(), account.getFirstName(), account.getLastName(),ac.getAccountId());
             String refreshToken = JWTService.generateRefreshToken(account.getEmail());
             return ResponseEntity.ok(Map.of("accessToken", token, "refreshToken", refreshToken));
         } else {

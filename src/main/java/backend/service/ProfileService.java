@@ -15,9 +15,8 @@ import com.cloudinary.utils.ObjectUtils;
 
 @Service
 public class ProfileService {
-    private final String cloudinaryUrl; 
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    private static final int CODE_LENGTH = 12;
+    private final String cloudinaryUrl;
+
     @Autowired
     private ProfileRepository profileRepository;
 
@@ -83,13 +82,5 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
-    public static String generateVerifyCode() {
-        SecureRandom random = new SecureRandom();
-        StringBuilder verifyCode = new StringBuilder(CODE_LENGTH);
-        for (int i = 0; i < CODE_LENGTH; i++) {
-            int index = random.nextInt(CHARACTERS.length()); 
-            verifyCode.append(CHARACTERS.charAt(index)); 
-        }
-        return verifyCode.toString(); 
-    }
+
 }
