@@ -1,14 +1,22 @@
 spring.application.name=SocialNetworkingWebsiteBackend
-spring.security.oauth2.client.registration.google.client-id=871201635349-nudin6ukk5qri1j95uqogr62l9sispgn.apps.googleusercontent.com
-spring.security.oauth2.client.registration.google.client-secret=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
+spring.security.oauth2.client.registration.google.client-id=
+spring.security.oauth2.client.registration.google.client-secret=
 spring.security.oauth2.client.registration.google.scope=profile, email
 spring.security.oauth2.client.registration.google.redirect-uri=http://localhost:8080/login/oauth2/code/google
 spring.security.oauth2.client.provider.google.authorization-uri=https://accounts.google.com/o/oauth2/auth
 spring.security.oauth2.client.provider.google.token-uri=https://oauth2.googleapis.com/token
-spring.security.oauth2.client.provider.google.account-info-uri=https://www.googleapis.com/oauth2/v3/userinfo
+#spring.security.oauth2.client.provider.google.account-info-uri=https://www.googleapis.com/oauth2/v3/userinfo
 # Cáº¥u hÃ¬nh MySQL
-spring.datasource.url=jdbc:mysql://localhost:3306/socialnetwork
-spring.datasource.username=
+spring.datasource.url=jdbc:mysql://localhost:3306/
+spring.datasource.username=sa
 spring.datasource.password=
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+#cloudinary
+cloudinary.url=
+#url-frontend
+frontend.url=http://localhost:4200
+
+#email
+email.username=
+email.password=

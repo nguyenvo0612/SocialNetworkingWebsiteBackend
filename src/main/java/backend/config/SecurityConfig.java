@@ -11,7 +11,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 ).oauth2Login(oauth2 -> oauth2.defaultSuccessUrl(frontendUrl + "/home", true))
                 .oauth2Login(oauth2 -> oauth2
-                                .defaultSuccessUrl(frontendUrl + "/home", true)
+                        .defaultSuccessUrl(frontendUrl + "/home", true)
 
 
                 ).logout(logout -> logout
@@ -46,7 +45,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 
 
     @Bean

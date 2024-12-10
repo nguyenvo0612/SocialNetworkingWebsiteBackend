@@ -7,7 +7,6 @@ import backend.service.AccountService;
 import backend.service.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 public class AuthController {
@@ -70,7 +68,7 @@ public class AuthController {
             }
             Account ac = accountService.findAccountByEmail(account.getEmail());
             Map<String, String> response = new HashMap<>();
-            String token = JWTService.generateAccessToken(account.getEmail(), account.getFirstName(), account.getLastName(),ac.getAccountId());
+            String token = JWTService.generateAccessToken(account.getEmail(), account.getFirstName(), account.getLastName(), ac.getAccountId());
             String refreshToken = JWTService.generateRefreshToken(account.getEmail());
             return ResponseEntity.ok(Map.of("accessToken", token, "refreshToken", refreshToken));
         } else {

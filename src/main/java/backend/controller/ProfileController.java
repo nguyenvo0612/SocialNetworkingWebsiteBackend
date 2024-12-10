@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-
 @RestController
 @RequestMapping("api/profile")
 public class ProfileController {
@@ -16,7 +15,7 @@ public class ProfileController {
 
     @GetMapping("/find/{id}")
     public Profile findProfileById(@PathVariable Long id) {
-        return  profileService.findProfileByAccountId(id);
+        return profileService.findProfileByAccountId(id);
     }
 
 

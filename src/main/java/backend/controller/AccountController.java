@@ -28,7 +28,7 @@ public class AccountController {
     }
 
     @PostMapping("/verify/{email}/{verificationToken}")
-    public Account verifyAccount(@PathVariable String verificationToken,@PathVariable String email) {
-        return  userService.verifyAccount(email,verificationToken);
+    public Account verifyAccount(@PathVariable String verificationToken, @PathVariable String email) {
+        return userService.verifyAccount(email, verificationToken);
     }
 }

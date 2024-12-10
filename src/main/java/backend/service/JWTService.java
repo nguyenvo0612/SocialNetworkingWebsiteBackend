@@ -11,7 +11,8 @@ import java.util.Date;
 public class JWTService {
     private static final String SECRET_KEY = "your_secret_key";
     private static final long EXPIRATION_TIME = 10; //1hour
-    public static String  generateAccessToken(String email, String firstName, String lastName,Long accountId) {
+
+    public static String generateAccessToken(String email, String firstName, String lastName, Long accountId) {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("accountId", accountId)
@@ -22,14 +23,16 @@ public class JWTService {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
+
     public static String generateRefreshToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 24*EXPIRATION_TIME)) // 30 days expiration time
+                .setExpiration(new Date(System.currentTimeMillis() + 24 * EXPIRATION_TIME)) // 30 days expiration time
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token);
@@ -38,6 +41,7 @@ public class JWTService {
             return false;
         }
     }
+
     // Extract Claims from Access Token or Refresh Token
     public static Claims extractClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY)

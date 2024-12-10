@@ -25,7 +25,7 @@ public class EmailService {
         this.password = password;
     }
 
-    public void sendVerificationEmail(String recipientEmail,String verifyCode) {
+    public void sendVerificationEmail(String recipientEmail, String verifyCode) {
 
         // Cấu hình thông tin máy chủ email
         Properties properties = new Properties();
@@ -51,7 +51,7 @@ public class EmailService {
 
             // Đọc nội dung tệp HTML
             String emailTemplate = new String(Files.readAllBytes(Paths.get("src/main/resources/templates/verification_email_template.html")));
-            String verificationLink = frontendUrl + "/api/account/verify/" ;
+            String verificationLink = frontendUrl + "/api/account/verify/";
 
             // Thay thế các biến trong tệp HTML
             String emailContent = emailTemplate

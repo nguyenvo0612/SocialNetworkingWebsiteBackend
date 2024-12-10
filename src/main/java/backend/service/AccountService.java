@@ -27,7 +27,7 @@ public class AccountService {
         account.setEmail(email);
         account.setVerificationToken(verificationToken);
         account.setIsEmailVerified(false);
-        Role role =roleRepository.findById(1).orElse(null);
+        Role role = roleRepository.findById(1).orElse(null);
         account.setRoleId(role);
         return accountRepository.save(account);
     }
@@ -35,7 +35,12 @@ public class AccountService {
     public Account findAccountByEmail(String email) {
         return accountRepository.findAccountByEmail(email);
     }
-    public Account verifyAccount(String email,String verificationToken) {
+
+    public Account findAccountByAccountId(Long accountId) {
+        return accountRepository.findAccountByAccountId(accountId);
+    }
+
+    public Account verifyAccount(String email, String verificationToken) {
         Account account = findAccountByEmail(email);
         if (account != null && account.getVerificationToken().equals(verificationToken)) {
             account.setIsEmailVerified(true);
@@ -45,7 +50,7 @@ public class AccountService {
         return null;
     }
 
-    public List<Account> getAll(){
+    public List<Account> getAll() {
         return accountRepository.findAll();
     }
 
