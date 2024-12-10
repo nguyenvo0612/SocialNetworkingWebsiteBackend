@@ -1,6 +1,7 @@
 package backend.service;
 
 import backend.dto.ProfileDTO;
+import backend.entity.Account;
 import backend.entity.Profile;
 import backend.repository.ProfileRepository;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -20,6 +21,9 @@ public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
 
+    @Autowired
+    private AccountService accountService;
+
     // Khởi tạo Dotenv và lấy giá trị từ .env
     public ProfileService() {
         Dotenv dotenv = Dotenv.load();
@@ -28,6 +32,11 @@ public class ProfileService {
 
     public Profile findProfileByAccountId(Long accountId) {
         return profileRepository.findProfileByAccountId(accountId);
+    }
+
+    public Long findProfileIdByAccountId(Long accountId) {
+        Profile profile = findProfileByAccountId(accountId);
+        return profile.getProfileId();
     }
 
     public Profile createProfileWithAvatar(ProfileDTO profileDTO) {
@@ -49,11 +58,14 @@ public class ProfileService {
             String avatarUrl = (String) uploadResult.get("url");
 
             // Tạo profile mới
+            Account account=accountService.findAccountByAccountId(profileDTO.getAccountId());
             Profile profile = new Profile();
-            profile.setProfileId(profileDTO.getAccountId());
+            profile.setAccount(account);
             profile.setRealName(profileDTO.getRealName());
             profile.setNickName(profileDTO.getNickName());
             profile.setBio(profileDTO.getBio());
+            profile.setLinkWebsite(profileDTO.getLinkWebsite());
+            profile.setLocation(profileDTO.getLocation());
             profile.setAvatar(avatarUrl); // Sử dụng URL từ Cloudinary
             return profileRepository.save(profile);
         } catch (Exception e) {
@@ -61,8 +73,10 @@ public class ProfileService {
         }
     }
 
-    public Profile updateProfile(Long profileId, ProfileDTO profileDTO) {
-        Profile profile = profileRepository.findById(profileId).orElseThrow(() -> new RuntimeException("Profile not found"));
+    public Profile updateProfile( ProfileDTO profileDTO) {
+        Profile profile = new Profile();
+        profile.setProfileId(findProfileIdByAccountId(profileDTO.getAccountId()));
+        profile.setAccount(accountService.findAccountByAccountId(profileDTO.getAccountId()));
         profile.setNickName(profileDTO.getNickName());
         profile.setRealName(profileDTO.getRealName());
         profile.setBio(profileDTO.getBio());

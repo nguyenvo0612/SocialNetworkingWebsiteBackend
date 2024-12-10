@@ -26,13 +26,12 @@ public class ProfileController {
 
     @PostMapping("/update_avatar")
     public Profile updateAvatar(@RequestBody ProfileDTO profileDTO, @PathVariable Long profileId) {
-
         return profileService.updateAvatar(profileDTO, profileId);
     }
 
-    @PutMapping("/update/{profileId}")
-    public Profile updateProfile(@PathVariable Long profileId, @RequestBody ProfileDTO profileDTO) {
-        return profileService.updateProfile(profileId, profileDTO);
+    @PutMapping("/update")
+    public Profile updateProfile(@RequestBody ProfileDTO profileDTO) {
+        return profileService.updateProfile(profileDTO);
     }
 
     @DeleteMapping("/delete/{profileId}")
