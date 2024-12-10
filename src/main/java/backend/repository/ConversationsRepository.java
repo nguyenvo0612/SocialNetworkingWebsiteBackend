@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ConversationsRepository extends JpaRepository<Conversations, Long> {
- Conversations findConversationsByConversationId();
+ Conversations findByConversationId(Long conversationId);
 
 
 }

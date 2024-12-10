@@ -22,16 +22,16 @@ public class Messages {
     private Long messageId;
 
     @ManyToOne
-    @JoinColumn(name = "conversation", referencedColumnName = "conversation_id", insertable = false, updatable = false)
-    private Account conversation;
+    @JoinColumn(name = "conversation", referencedColumnName = "conversation_id",  updatable = false)
+    private Conversations conversation;
 
     @ManyToOne
-    @JoinColumn(name = "sender", referencedColumnName = "account_id", insertable = false, updatable = false)
+    @JoinColumn(name = "sender", referencedColumnName = "account_id",  updatable = false)
     private Account sender;
 
     @Column(name = "content")
     private String content;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

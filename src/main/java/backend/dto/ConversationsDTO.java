@@ -9,6 +9,5 @@ public class ConversationsDTO {
 
     private Long accountId1;
 
-
     private Long accountId2;
 }

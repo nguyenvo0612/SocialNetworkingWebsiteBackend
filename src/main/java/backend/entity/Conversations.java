@@ -22,12 +22,12 @@ public class Conversations {
     private Long conversationId;
 
     @ManyToOne
-    @JoinColumn(name = "account_id1", referencedColumnName = "account_id", insertable = false, updatable = false)
+    @JoinColumn(name = "account_id1", referencedColumnName = "account_id")
     private Account accountId1;
 
 
     @ManyToOne
-    @JoinColumn(name = "account_id2", referencedColumnName = "account_id", insertable = false, updatable = false)
+    @JoinColumn(name = "account_id2", referencedColumnName = "account_id")
     private Account accountId2;
 
     @Column(name = "created_at", nullable = false)

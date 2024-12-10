@@ -21,8 +21,8 @@ public class ConversationsService {
         return conversationsRepository.findAll();
     }
 
-    public Conversations getConversationById(Long conversationId) {
-        return conversationsRepository.findConversationsByConversationId();
+    public Conversations getById(Long conversationId) {
+        return conversationsRepository.findByConversationId(conversationId);
     }
 
     public Conversations createConversation(ConversationsDTO conversationsDTO) {
