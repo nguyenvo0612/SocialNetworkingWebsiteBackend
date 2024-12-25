@@ -1,6 +1,7 @@
 package backend.service;
 
 import backend.dto.LastMessageDTO;
+import backend.dto.MessageBoxDTO;
 import backend.dto.MessagesDTO;
 import backend.entity.Account;
 import backend.entity.Conversations;
@@ -32,7 +33,7 @@ public class MessagesService {
     public Messages createMessage(MessagesDTO messagesDTO) {
         Messages messages = new Messages();
         Conversations conversation = conversationsService.getById(messagesDTO.getConversation());
-        Account sender =accountService.findAccountByAccountId(messagesDTO.getSender());
+        Account sender = accountService.findAccountByAccountId(messagesDTO.getSender());
         messages.setConversation(conversation);
         messages.setSender(sender);
         messages.setContent(messagesDTO.getContent());
@@ -56,6 +57,22 @@ public class MessagesService {
             dtos.add(dto);
         }
 
+        return dtos;
+    }
+
+    public List<MessageBoxDTO> getMessagesBoxByConversationId(Long conversationId) {
+        List<Object[]> results = messagesRepository.getMessagesBoxById(conversationId);
+        List<MessageBoxDTO> dtos = new ArrayList<>();
+        for (Object[] row : results) {
+            MessageBoxDTO dto = new MessageBoxDTO();
+            dto.setConversationId(((Number) row[0]).longValue());
+            dto.setAccountId1(((Number) row[1]).longValue());
+            dto.setAccountId2(((Number) row[2]).longValue());
+            dto.setSenderId(((Number) row[3]).longValue());
+            dto.setContent((String) row[4]);
+            dto.setCreatedAt(row[5] != null ? ((Timestamp) row[5]).toLocalDateTime() : null);
+            dtos.add(dto);
+        }
         return dtos;
     }
 }

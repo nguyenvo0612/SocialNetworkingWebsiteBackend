@@ -34,4 +34,10 @@ public interface MessagesRepository extends JpaRepository<Messages, Long> {
             SELECT * FROM RankedMessages WHERE rn = 1
             """, nativeQuery = true)
     List<Object[]> findConversationsWithPartnerByAccountId(Long accountId);
+
+
+    @Query(value = """
+            select c.conversation_id, c.account_id1, c.account_id2, m.sender, m.content , m.created_at  from conversations c inner join messages m on c.conversation_id = m.conversation where c.conversation_id = :conversationId
+            """, nativeQuery = true)
+    List<Object[]> getMessagesBoxById(Long conversationId);
 }
