@@ -1,5 +1,6 @@
 package backend.controller;
 
+import backend.dto.LastMessageDTO;
 import backend.dto.MessagesDTO;
 import backend.entity.Messages;
 import backend.service.MessagesService;
@@ -23,5 +24,10 @@ public class MessagesController {
     @PostMapping("/create")
     public Messages createMessage(@RequestBody MessagesDTO messagesDTO) {
         return messagesService.createMessage(messagesDTO);
+    }
+
+    @GetMapping("/last-messages/{accountId}")
+    public List<LastMessageDTO> getAllConversationsLastMessages(@PathVariable Long accountId) {
+        return messagesService.getConversationsWithPartner(accountId);
     }
 }

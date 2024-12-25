@@ -1,5 +1,6 @@
 package backend.service;
 
+import backend.dto.LastMessageDTO;
 import backend.dto.MessagesDTO;
 import backend.entity.Account;
 import backend.entity.Conversations;
@@ -7,6 +8,10 @@ import backend.entity.Messages;
 import backend.repository.MessagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MessagesService {
@@ -34,5 +39,23 @@ public class MessagesService {
         System.out.println(conversation.getConversationId());
         System.out.println(sender.getAccountId());
         return messagesRepository.save(messages);
+    }
+
+
+    public List<LastMessageDTO> getConversationsWithPartner(Long accountId) {
+        List<Object[]> results = messagesRepository.findConversationsWithPartnerByAccountId(accountId);
+        List<LastMessageDTO> dtos = new ArrayList<>();
+
+        for (Object[] row : results) {
+            LastMessageDTO dto = new LastMessageDTO();
+            dto.setConversationId(((Number) row[0]).longValue());
+            dto.setPartnerName((String) row[1]);
+            dto.setLastMessage((String) row[2]);
+            dto.setLastMessageTime(row[3] != null ? ((Timestamp) row[3]).toLocalDateTime() : null);
+            dto.setLastMessageSenderId(row[4] != null ? ((Number) row[4]).longValue() : null);
+            dtos.add(dto);
+        }
+
+        return dtos;
     }
 }
