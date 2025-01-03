@@ -5,6 +5,7 @@ import backend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,5 +19,10 @@ public class PostController {
     @GetMapping("/getAll")
     public List<Post> getAll() {
         return postService.getAllPosts();
+    }
+
+    @GetMapping("/find/{postId}")
+    public Post findbyId(@RequestParam Long postId) {
+        return postService.findPostById(postId);
     }
 }
