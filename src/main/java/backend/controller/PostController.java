@@ -3,10 +3,7 @@ package backend.controller;
 import backend.entity.Post;
 import backend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,10 @@ public class PostController {
     @GetMapping("/find/{postId}")
     public Post findbyId(@RequestParam Long postId) {
         return postService.findPostById(postId);
+    }
+
+    @DeleteMapping("/delete/{postId}")
+    public void deletePost(@PathVariable Long postId) {
+        postService.deletePostById(postId);
     }
 }

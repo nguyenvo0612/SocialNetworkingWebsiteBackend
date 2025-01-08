@@ -19,4 +19,10 @@ public class PostService {
     public Post findPostById(Long id) {
         return postRepository.findPostByPostId(id);
     }
+
+    public Post deletePostById(Long id) {
+        Post post = postRepository.findPostByPostId(id);
+        postRepository.delete(post);
+        return post;
+    }
 }
