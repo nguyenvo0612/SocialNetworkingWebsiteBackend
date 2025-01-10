@@ -16,7 +16,7 @@ public class PostImageService {
         return postImageRepository.findAll();
     }
 
-    public PostImage deletePostImage(Long postImageId) {
-        return postImageRepository.deletePostImageByImageId(postImageId);
+    public PostImage deletePostImage(Long imageId) {
+        return postImageRepository.deletePostImageByImageId(imageId);
     }
 }
