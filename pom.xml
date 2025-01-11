@@ -136,7 +136,7 @@
             <version>0.11.5</version>
         </dependency>
 
-<!--  clouldinary      -->
+        <!--  clouldinary      -->
         <dependency>
             <groupId>com.cloudinary</groupId>
             <artifactId>cloudinary-http5</artifactId>
@@ -153,13 +153,23 @@
             <version>2.2.4</version>
         </dependency>
 
-<!--        email-->
+        <!--        email-->
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
         </dependency>
+
+
+        <!--    websocket-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+
     </dependencies>
+
 
     <build>
         <plugins>

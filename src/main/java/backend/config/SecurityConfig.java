@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults()) // Kích hoạt CORS
                 .authorizeHttpRequests(author -> author
-                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/api/**","/**").permitAll()
                         .requestMatchers("/", "/login", "/error", "/login/oauth2/code/google", "/logout").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/find/**").permitAll()
